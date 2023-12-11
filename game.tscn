@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://c07ue1ui8riy8"]
+[gd_scene load_steps=7 format=3 uid="uid://c07ue1ui8riy8"]
 
 [ext_resource type="PackedScene" uid="uid://iexh7p3ytn2l" path="res://Player/player.tscn" id="1_3xtht"]
 [ext_resource type="Script" path="res://Player/Player_Container.gd" id="2_gohcu"]
 [ext_resource type="PackedScene" uid="uid://cphnmvec8xxr3" path="res://Asteroid/asteroid.tscn" id="2_u1anl"]
 [ext_resource type="PackedScene" uid="uid://cetn7ihrl852t" path="res://Enemy/enemy.tscn" id="3_0ffyn"]
+[ext_resource type="Script" path="res://UI/HUD.gd" id="5_rt4a7"]
+[ext_resource type="FontFile" uid="uid://bd8c150jf01fl" path="res://Assets/Hyperspace Bold.otf" id="5_xlm8y"]
 
 [node name="Game" type="Node2D"]
 
@@ -21,9 +23,59 @@ position = Vector2(900, 600)
 script = ExtResource("2_gohcu")
 
 [node name="Player" parent="Player_Container" instance=ExtResource("1_3xtht")]
-position = Vector2(576, 324)
+position = Vector2(583, 299)
 
 [node name="Enemy_Container" type="Node2D" parent="."]
 
 [node name="Enemy" parent="Enemy_Container" instance=ExtResource("3_0ffyn")]
 position = Vector2(400, 100)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_rt4a7")
+
+[node name="Score" type="Label" parent="UI/HUD"]
+layout_mode = 1
+offset_left = 10.0
+offset_right = 210.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("5_xlm8y")
+theme_override_font_sizes/font_size = 20
+text = "Score:"
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("5_xlm8y")
+theme_override_font_sizes/font_size = 20
+text = "Time:
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Indicator_Container" type="Control" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Timer" type="Timer" parent="UI/HUD"]
+autostart = true
+
+[connection signal="timeout" from="UI/HUD/Timer" to="UI/HUD" method="_on_timer_timeout"]
